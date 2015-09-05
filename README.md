@@ -4,6 +4,9 @@
 
 Ember addon for adding validation functionality to your Ember Data Models.
 
+This is a fork of [ember-cli-data-validation]( https://github.com/vladaspasic/ember-cli-data-validation) with added support for relationships, currently only working:
+  1. BelongsTo - RequiredValidator
+
 ## Installation
 
 * `ember install ember-cli-data-validation`
