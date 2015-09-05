@@ -1,7 +1,5 @@
 import Validator from 'ember-cli-data-validation/validator';
-import {
-	hasValue
-} from 'ember-cli-data-validation/utils';
+import {	hasValue, hasBelongsToValue } from 'ember-cli-data-validation/utils';
 /**
  * Validator that checks if the value is set.
  *
@@ -9,9 +7,18 @@ import {
  * @extends {Validator}
  */
 export default Validator.extend({
-	validate: function(name, value) {
-		if(!hasValue(value)) {
-			return this.format();
+	validate: function(name, value, attribute) {
+		if(attribute.isAttribute){
+			if(!hasValue(value)) {
+				return this.format();
+			}
+		} else if(attribute.isRelationship){
+			if(attribute.kind === 'belongsTo'){
+				if(!hasBelongsToValue(value)){
+					return this.format();
+				}
+			}
+			// no support yet for hasMany
 		}
 	}
 });

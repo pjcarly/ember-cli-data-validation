@@ -11,6 +11,16 @@ export function hasValue(value) {
 }
 
 /**
+ * Determines whether or not a belongsToRelationship isEmpty
+ *
+ * @param  {*}  value
+ * @return {Boolean}
+ */
+export function hasBelongsToValue(value) {
+	return Ember.isPresent(value) && value.hasOwnProperty('content') && !Ember.isEmpty(value.content);
+}
+
+/**
  * Determines if the value is Boolean.
  *
  * @param  {*}  obj

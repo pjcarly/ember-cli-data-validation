@@ -45,7 +45,15 @@ export default Ember.Object.extend({
 			return attribute.options.label;
 		}
 
-		return attribute.name.replace(/(?:^\w|[A-Z]|\b\w)/g, function(match, index) {
+		var name = '';
+
+		if(Ember.isPresent(attribute.name)){
+			name = attribute.name;
+		} else if(Ember.isPresent(attribute.key)){
+			name = attribute.key;
+		}
+
+		return name.replace(/(?:^\w|[A-Z]|\b\w)/g, function(match, index) {
 			return index === 0 ? match.toUpperCase() : ' ' + match.toLowerCase();
 		}).replace(/_/g, ' ');
 	}),

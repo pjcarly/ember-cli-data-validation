@@ -61,7 +61,7 @@ export default Ember.Mixin.create({
 		var validators = [];
 
 		validations.forEach(function(validation) {
-			var keys = Ember.keys(validation);
+			var keys = Object.keys(validation);
 
 			keys.forEach(function(name) {
 				validators.push({
@@ -104,6 +104,21 @@ export default Ember.Mixin.create({
 		}, this);
 	},
 
+	_validateRelationship: function(relationship){
+		var validators = this.validatorsFor(relationship),
+			name = relationship.key;
+
+		var errors = this.get('errors');
+
+		validators.forEach(function(validator) {
+			var result = validator.validate(name, this.get(name), relationship, this);
+
+			if (typeof result === 'string') {
+				errors.add(name, result);
+			}
+		}, this);
+	},
+
 	/**
 	 * Validates the Model.
 	 *
@@ -126,6 +141,10 @@ export default Ember.Mixin.create({
 
 		this.eachAttribute(function(key, attribute) {
 			Ember.run(this, '_validateAttribute', attribute);
+		}, this);
+
+		this.eachRelationship(function(key, relationship) {
+			Ember.run(this, '_validateRelationship', relationship);
 		}, this);
 
 		return Ember.get(errors, 'isEmpty');
