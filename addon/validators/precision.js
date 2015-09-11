@@ -8,10 +8,13 @@ import Validator from 'ember-cli-data-validation/validator';
  * @extends {Validator}
  */
 
+var amountOfDigits = function(num) {
+  return (num + '').replace('.', '').length;;
+}
+
 export default Validator.extend({
-	validate: function(name, value) {
-		
-		if (isNaN(value)) {
+	validate: function(name, value, attributes) {
+		if (!isNaN(value) && (amountOfDigits(value) > attributes.options.validation.precision)) {
 			return this.format();
 		}
 	}
