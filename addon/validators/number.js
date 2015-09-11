@@ -1,12 +1,17 @@
-import PatternValidator from 'ember-cli-data-validation/pattern-validator';
+import Validator from 'ember-cli-data-validation/validator';
 
 /**
  * Validator that checks if the Attribute value
  * is a number.
  *
  * @class NumberValidator
- * @extends {PatternValidator}
+ * @extends {Validator}
  */
-export default PatternValidator.extend({
-  pattern: /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/
+
+export default Validator.extend({
+	validate: function(name, value) {
+		if (isNaN(value)) {
+			return this.format();
+		}
+	}
 });

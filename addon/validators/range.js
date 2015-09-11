@@ -63,7 +63,7 @@ export default Validator.extend({
 	},
 
 	validateNumber: function(value, fromValue, toValue) {
-		value = parseInt(value, 10);
+		value = parseFloat(value, 10);
 
 		if(isNaN(value)) {
 			return true;
