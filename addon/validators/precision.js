@@ -15,7 +15,7 @@ var amountOfDigits = function(num) {
 export default Validator.extend({
 	validate: function(name, value, attributes) {
 		if (!isNaN(value) && (amountOfDigits(value) > attributes.options.validation.precision)) {
-			return this.format();
+			return this.format(attributes.options.validation.precision);
 		}
 	}
 });

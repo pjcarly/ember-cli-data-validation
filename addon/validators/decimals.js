@@ -16,7 +16,7 @@ var preDecimals = function(num) {
 export default Validator.extend({
 	validate: function(name, value, attributes) {
 		if (!isNaN(value) && (preDecimals(value) > attributes.options.validation.length)) {
-			return this.format();
+			return this.format(attributes.options.validation.length);
 		}
 	}
 });
