@@ -1,4 +1,5 @@
 import Validator from 'ember-cli-data-validation/validator';
+import Ember from 'ember';
 
 /**
  * Validator that checks if the Attribute value
@@ -9,12 +10,12 @@ import Validator from 'ember-cli-data-validation/validator';
  */
 
 var amountOfDigits = function(num) {
-  return (num + '').replace('.', '').length;;
+  return (num + '').replace('.', '').replace(',', '').length;;
 }
 
 export default Validator.extend({
 	validate: function(name, value, attributes) {
-		if (!isNaN(value) && (amountOfDigits(value) > attributes.options.validation.precision)) {
+		if (!Ember.isBlank(value) && !isNaN(value) && (amountOfDigits(value) > attributes.options.validation.precision)) {
 			return this.format(attributes.options.validation.precision);
 		}
 	}

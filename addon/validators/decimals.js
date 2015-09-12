@@ -1,4 +1,5 @@
 import Validator from 'ember-cli-data-validation/validator';
+import Ember from 'ember';
 
 /**
  * Validator that checks if the Attribute value
@@ -8,15 +9,16 @@ import Validator from 'ember-cli-data-validation/validator';
  * @extends {Validator}
  */
 
-var preDecimals = function(num) {
-  var preInt = parseInt(num);
-  return preInt.toString().length;
+var decimalPlaces = function(num) {
+  var match = (''+num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+  if (!match) { return 0; }
+  return Math.max(0, (match[1] ? match[1].length : 0) - (match[2] ? +match[2] : 0));
 }
 
 export default Validator.extend({
 	validate: function(name, value, attributes) {
-		if (!isNaN(value) && (preDecimals(value) > attributes.options.validation.length)) {
-			return this.format(attributes.options.validation.length);
+		if (!Ember.isBlank(value) && !isNaN(value) && (decimalPlaces(value) > attributes.options.validation.decimals)) {
+			return this.format(attributes.options.validation.decimals);
 		}
 	}
 });
