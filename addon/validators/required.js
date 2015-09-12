@@ -1,5 +1,5 @@
 import Validator from 'ember-cli-data-validation/validator';
-import {	hasValue, hasBelongsToValue } from 'ember-cli-data-validation/utils';
+import { hasValue, hasBelongsToValue } from 'ember-cli-data-validation/utils';
 /**
  * Validator that checks if the value is set.
  *

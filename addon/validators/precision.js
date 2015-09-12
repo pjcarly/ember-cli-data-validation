@@ -1,5 +1,6 @@
 import Validator from 'ember-cli-data-validation/validator';
 import Ember from 'ember';
+import { amountOfDigits } from 'ember-cli-data-validation/utils';
 
 /**
  * Validator that checks if the Attribute value
@@ -8,11 +9,6 @@ import Ember from 'ember';
  * @class NumberValidator
  * @extends {Validator}
  */
-
-var amountOfDigits = function(num) {
-  return (num + '').replace('.', '').replace(',', '').length;;
-}
-
 export default Validator.extend({
 	validate: function(name, value, attributes) {
 		if (!Ember.isBlank(value) && !isNaN(value) && (amountOfDigits(value) > attributes.options.validation.precision)) {

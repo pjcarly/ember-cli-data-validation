@@ -1,5 +1,6 @@
 import Validator from 'ember-cli-data-validation/validator';
 import Ember from 'ember';
+import { decimalPlaces } from 'ember-cli-data-validation/utils';
 
 /**
  * Validator that checks if the Attribute value
@@ -8,12 +9,6 @@ import Ember from 'ember';
  * @class NumberValidator
  * @extends {Validator}
  */
-
-var decimalPlaces = function(num) {
-  var match = (''+num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
-  if (!match) { return 0; }
-  return Math.max(0, (match[1] ? match[1].length : 0) - (match[2] ? +match[2] : 0));
-}
 
 export default Validator.extend({
 	validate: function(name, value, attributes) {
