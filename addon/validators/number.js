@@ -10,8 +10,8 @@ import Validator from 'ember-cli-data-validation/validator';
 
 export default Validator.extend({
 	validate: function(name, value) {
-		
-		if (isNaN(value)) {
+
+		if (!Ember.isBlank(value) && isNaN(value)) {
 			return this.format();
 		}
 	}
