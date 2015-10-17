@@ -1,5 +1,9 @@
 import Ember from 'ember';
 import Validator from 'ember-cli-data-validation/validator';
+import {
+  isNumeric
+}
+from 'ember-cli-data-validation/utils';
 
 /**
  * Validator that could be used to validate minimum length,
@@ -10,51 +14,51 @@ import Validator from 'ember-cli-data-validation/validator';
  * @extends {Validator}
  */
 export default Validator.extend({
-	/**
-	 * Min value for the validator.
-	 *
-	 * @property min
-	 * @type {Number}
-	 * @default null
-	 */
-	min: null,
+  /**
+   * Min value for the validator.
+   *
+   * @property min
+   * @type {Number}
+   * @default null
+   */
+  min: null,
 
-	validate: function(name, value, attribute) {
-		var type = attribute.type,
-			minValue = this.get('min');
+  validate: function(name, value, attribute) {
+    var type = attribute.type,
+      minValue = this.get('min');
 
-		Ember.assert('You must define a `min` for MinValidator', Ember.isPresent(minValue));
+    Ember.assert('You must define a `min` for MinValidator', Ember.isPresent(minValue));
 
-		var validatorName = 'validate' + Ember.String.classify(type);
+    var invalid = true;
 
-		var invalid = true;
+    if (isNumeric(value)) {
+      invalid = this.validateNumber(value, maxValue);
+    } else {
+      invalid = this.validateString(value, maxValue);
+    }
 
-		if(Ember.canInvoke(this, validatorName)) {
-			invalid = Ember.run(this, validatorName, value, minValue);
-		}
+    if (invalid) {
+      return this.format(minValue);
+    }
+  },
 
-		if(invalid) {
-			return this.format(minValue);
-		}
-	},
+  validateString: function(value, min) {
+    if (typeof value !== 'string') {
+      return true;
+    }
 
-	validateString: function(value, min) {
-		if(typeof value !== 'string') {
-			return true;
-		}
+    var length = value && value.length || 0;
 
-		var length = value && value.length || 0;
+    return length < min;
+  },
 
-		return length < min;
-	},
+  validateNumber: function(value, min) {
+    value = parseFloat(value, 10);
 
-	validateNumber: function(value, min) {
-		value = parseFloat(value, 10);
+    if (isNaN(value)) {
+      return true;
+    }
 
-		if(isNaN(value)) {
-			return true;
-		}
-
-		return value < min;
-	}
+    return value < min;
+  }
 });

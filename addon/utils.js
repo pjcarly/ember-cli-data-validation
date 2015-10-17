@@ -7,7 +7,7 @@ import Ember from 'ember';
  * @return {Boolean}
  */
 export function hasValue(value) {
-	return Ember.isPresent(value) || !Ember.isEmpty(value);
+  return Ember.isPresent(value) || !Ember.isEmpty(value);
 }
 
 /**
@@ -17,7 +17,7 @@ export function hasValue(value) {
  * @return {Boolean}
  */
 export function hasBelongsToValue(value) {
-	return Ember.isPresent(value) && value.hasOwnProperty('content') && !Ember.isEmpty(value.content);
+  return Ember.isPresent(value) && value.hasOwnProperty('content') && !Ember.isEmpty(value.content);
 }
 
 /**
@@ -27,7 +27,17 @@ export function hasBelongsToValue(value) {
  * @return {Boolean}
  */
 export function isBoolean(obj) {
-	return obj === true || obj === false || Object.prototype.toString.call(obj) === '[object Boolean]';
+  return obj === true || obj === false || Object.prototype.toString.call(obj) === '[object Boolean]';
+}
+
+/**
+ * Determines if the value is Numeric.
+ *
+ * @param  {*}  obj
+ * @return {Boolean}
+ */
+export function isNumeric(value) {
+  return !isNaN(parseFloat(value)) && isFinite(value);
 }
 
 /**
@@ -37,8 +47,10 @@ export function isBoolean(obj) {
  * @return integer
  */
 export function decimalPlaces(num) {
-  var match = (''+num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
-  if (!match) { return 0; }
+  var match = ('' + num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+  if (!match) {
+    return 0;
+  }
   return Math.max(0, (match[1] ? match[1].length : 0) - (match[2] ? +match[2] : 0));
 }
 
