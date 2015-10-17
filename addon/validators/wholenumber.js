@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import Validator from 'ember-cli-data-validation/validator';
 
 /**
@@ -9,10 +10,10 @@ import Validator from 'ember-cli-data-validation/validator';
  */
 
 export default Validator.extend({
-	validate: function(name, value) {
+  validate: function(name, value) {
 
-		if (!Ember.isBlank(value) && (isNaN(value) || (value % 1 != 0))) {
-			return this.format();
-		}
-	}
+    if (!Ember.isBlank(value) && (isNaN(value) || (value % 1 !== 0))) {
+      return this.format();
+    }
+  }
 });

@@ -60,6 +60,7 @@ export function decimalPlaces(num) {
  * @param  numeric value
  * @return integer
  */
-export function amountOfDigits(num) {
-  return (num + '').replace('.', '').replace(',', '').length;;
+export function amountOfDigits(num) { << << << < HEAD
+  return (num + '').replace('.', '').replace(',', '').length;; === === =
+  return (num + '').replace('.', '').replace(',', '').length; >>> >>> > 0 d3aa691bc9ec799b549541e73e4e5b66ca4e4bf
 }
