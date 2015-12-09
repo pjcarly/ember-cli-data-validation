@@ -24,17 +24,17 @@ export default Validator.extend({
   min: null,
 
   validate: function(name, value, attribute) {
-    var type = attribute.type,
+    let type = attribute.type,
       minValue = this.get('min');
 
     Ember.assert('You must define a `min` for MinValidator', Ember.isPresent(minValue));
 
-    var invalid = true;
+    let invalid = true;
 
-    if (isNumeric(value)) {
-      invalid = this.validateNumber(value, maxValue);
-    } else {
+    if (attribute.type === 'string') {
       invalid = this.validateString(value, maxValue);
+    } else {
+      invalid = this.validateNumber(value, maxValue);
     }
 
     if (invalid) {
@@ -47,7 +47,7 @@ export default Validator.extend({
       return true;
     }
 
-    var length = value && value.length || 0;
+    let length = value && value.length || 0;
 
     return length < min;
   },
