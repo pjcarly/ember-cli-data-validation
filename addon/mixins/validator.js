@@ -1,5 +1,24 @@
 import Ember from 'ember';
-import DS from 'ember-data';
+import ValidationError from '../error';
+import defaultMessages from '../messages';
+
+function createValidationError(model) {
+	var messageResolver = lookupMessageResolver(model.container);
+
+	var message = messageResolver.resolveMessage('error'),
+		errors = model.get('errors');
+
+	if(Ember.isEmpty(message)) {
+		message = Ember.get(defaultMessages, 'error');
+	}
+
+	return new ValidationError(message, errors);
+}
+
+function lookupMessageResolver(container) {
+	return container.lookup('resolver:validation-message') ||
+		container.lookup('ember-cli-data-validation@resolver:validation-message');
+}
 
 function lookupValidator(container, obj) {
 	var typeKey = obj.type;
@@ -9,9 +28,7 @@ function lookupValidator(container, obj) {
 
 	Ember.assert('Could not find Validator `' + typeKey + '`.', typeof validatorClass === 'function');
 
-	var messageResolver = container.lookup('resolver:validation-message') ||
-		container.lookup('ember-cli-data-validation@resolver:validation-message');
-
+	var messageResolver = lookupMessageResolver(container);
 	var value = obj.value;
 
 	if (typeof value !== 'object') {
@@ -86,12 +103,17 @@ export default Ember.Mixin.create({
 	 * For each failed validation, error message is added to the Errors
 	 * object for it's attribute name.
 	 *
+	 * @method _validateAttribute
 	 * @param  {Attribute} attribute
 	 * @private
 	 */
 	_validateAttribute: function(attribute) {
 		var validators = this.validatorsFor(attribute),
 			name = attribute.name;
+
+		// Assign the Model name to the Attribute
+		attribute.parentTypeKey = this.constructor.modelName ||
+			this.constructor.typeKey;
 
 		var errors = this.get('errors');
 
@@ -128,6 +150,7 @@ export default Ember.Mixin.create({
 	 * by validation errors and it would transition into an invalid
 	 * state.
 	 *
+	 * @method validate
 	 * @return {Boolean}
 	 */
 	validate: function() {
@@ -157,6 +180,6 @@ export default Ember.Mixin.create({
 			return this._super();
 		}
 
-		return Ember.RSVP.reject(new DS.InvalidError());
+		return Ember.RSVP.reject(createValidationError(this));
 	}
 });
