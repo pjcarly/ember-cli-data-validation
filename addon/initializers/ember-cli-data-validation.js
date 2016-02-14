@@ -1,6 +1,6 @@
 import DefaultMessageResolver from 'ember-cli-data-validation/message-resolver';
 
-export function initialize( container, application ) {
+export function initialize(application) {
 	application.register('ember-cli-data-validation@resolver:validation-message', DefaultMessageResolver);
 }
 
