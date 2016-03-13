@@ -110,9 +110,14 @@ export default Ember.Object.extend({
    */
   format: function() {
     var message = this.get('message'),
-      label = this.get('attributeLabel');
+			label = this.get('attributeLabel');
 
-    Ember.assert('Message must be defined for this Validator', Ember.isPresent(message));
+		Ember.assert('Message must be defined for this Validator', Ember.isPresent(message));
+
+		var args = Array.prototype.slice.call(arguments);
+
+		args.unshift(label);
+		args.unshift(message);
 
 		return format.apply(null, args);
 	}
