@@ -63,3 +63,25 @@ export function decimalPlaces(num) {
 export function amountOfDigits(num) {
   return (num + '').replace('.', '').replace(',', '').length;
 }
+
+/**
+ * Converts the input to Date instance.
+ *
+ * If the value can not be converted, `null` is returned.
+ *
+ * @param  {*} value
+ * @return {Date}
+ */
+export function toDate(value) {
+	if (Object.prototype.toString.call(value) === '[object Date]') {
+		return value;
+	}
+
+	if (typeof value === 'number') {
+		value = new Date(value);
+	} else {
+		value = Date.parse(value);
+	}
+
+	return !isNaN(value) ? new Date(value) : null;
+}
