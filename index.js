@@ -2,5 +2,8 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-cli-data-validation'
+  name: 'ember-cli-data-validation',
+  isDevelopingAddon: function () {
+    return true;
+  }
 };
